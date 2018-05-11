@@ -2,5 +2,8 @@ FROM openai/retro-agent
 ADD simple-agent.py .
 CMD ["python", "-u", "/root/compo/simple-agent.py"]
 
+#docker login $DOCKER_REGISTRY \
+#    --username "retrocontestvjxnhgufbptoqaiw" \
+#    --password "M/aCuHGY3Tw0TV+EXaj4aPSDtDzqoPBy"
 #sudo docker build -f simple-agent.docker -t $DOCKER_REGISTRY/simple-agent:v1 .
 #sudo docker push $DOCKER_REGISTRY/simple-agent:v1

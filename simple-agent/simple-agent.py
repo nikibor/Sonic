@@ -3,6 +3,7 @@ import gym_remote.client as grc
 from retro_contest.local import make
 from random import randint
 
+
 def main():
     print('connecting to remote environment')
     # env = grc.RemoteEnv('tmp/sock')
