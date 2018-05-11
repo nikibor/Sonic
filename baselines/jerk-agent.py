@@ -6,7 +6,7 @@ import random
 
 import gym
 import numpy as np
-
+import gym_remote.client as grc
 from retro_contest.local import make
 import gym_remote.exceptions as gre
 
@@ -17,7 +17,7 @@ TOTAL_TIMESTEPS = int(1e6)
 def main():
     """Run JERK on the attached environment."""
     # env = grc.RemoteEnv('tmp/sock')
-    env = make(game='SonicTheHedgehog-Genesis', state='GreenHillZone.Act1')
+    env = make(game='SonicTheHedgehog-Genesis', state='SpringYardZone.Act1')
     env = TrackedEnv(env)
     new_ep = True
     solutions = []
@@ -35,6 +35,9 @@ def main():
                 env.reset()
                 new_ep = False
         rew, new_ep = move(env, 100)
+        if not new_ep and rew <= 50:
+            print('backtracking due to negative reward: %f' % rew)
+            _, new_ep = move(env, 20, left=True)
         if not new_ep and rew <= 0:
             print('backtracking due to negative reward: %f' % rew)
             _, new_ep = move(env, 70, left=True)
@@ -42,15 +45,15 @@ def main():
             solutions.append(([max(env.reward_history)], env.best_sequence()))
 
 
-def move(env, num_steps, left=False, jump_prob=1.0 / 10.0, jump_repeat=4):
+def move(env, num_steps, left=False, jump_prob=1.0 / 10.0, jump_repeat=10):
     """
     Move right or left for a certain number of steps,
     jumping periodically.
     """
     total_rew = 0.0
     done = False
-    steps_taken = 0
-    jumping_steps_left = 0
+    steps_taken = 1
+    jumping_steps_left = 2
     while not done and steps_taken < num_steps:
         action = np.zeros((12,), dtype=np.bool)
         action[6] = left
