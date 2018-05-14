@@ -1,4 +1,5 @@
-docker login $DOCKER_REGISTRY \
+export DOCKER_REGISTRY="retrocontestvjxnhgufbptoqaiw.azurecr.io"
+sudo docker login $DOCKER_REGISTRY \
     --username "retrocontestvjxnhgufbptoqaiw" \
     --password "M/aCuHGY3Tw0TV+EXaj4aPSDtDzqoPBy"
 sudo docker build -f simple-agent.docker -t $DOCKER_REGISTRY/simple-agent:v1 .

@@ -35,17 +35,18 @@ def main():
                 env.reset()
                 new_ep = False
         rew, new_ep = move(env, 100)
-        if not new_ep and rew <= 50:
-            print('backtracking due to negative reward: %f' % rew)
-            _, new_ep = move(env, 20, left=True)
+        # if not new_ep and rew >= 50:
+        #     print('50 _ backtracking due to negative reward: %f' % rew)
+        #     _, new_ep = move(env, 20, left=True)
         if not new_ep and rew <= 0:
             print('backtracking due to negative reward: %f' % rew)
-            _, new_ep = move(env, 70, left=True)
+            _, new_ep = move(env, 100, left=True, jump_repeat=0, jump_prob=0)
         if new_ep:
             solutions.append(([max(env.reward_history)], env.best_sequence()))
 
 
-def move(env, num_steps, left=False, jump_prob=1.0 / 10.0, jump_repeat=10):
+# def move(env, num_steps, left=False, jump_prob=1.5 / 10.0, jump_repeat=10):
+def move(env, num_steps, left=False, jump_prob=0.5 / 10.0, jump_repeat=5):
     """
     Move right or left for a certain number of steps,
     jumping periodically.
